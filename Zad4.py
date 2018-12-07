@@ -30,7 +30,7 @@ class Application:
 
     def click_ppm_lpm_controller (self, event):
 
-        self.save_file()
+        self.createFile()
 
         msb.showinfo("Info", "Plik został utworzony, za chwile nastąpi jego edycja w notatniku")
         execute = "notepad.exe " + self.path
@@ -40,7 +40,7 @@ class Application:
         self.displayInfo(newTextInfo)
 
 
-    def save_file(self):
+    def createFile(self):
 
         self.directory = fd.askdirectory()  # wskazanie ścieżki do folderu docelowego
         if self.directory:
