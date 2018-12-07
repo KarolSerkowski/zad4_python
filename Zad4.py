@@ -10,6 +10,7 @@ class Application:
     fileName = datetime.datetime.today().strftime('%Y-%m-%d')
     directory = ""
     path = ""
+    mainFilePath = ""
     nameNewFile = ""
 
     def __init__(self):
@@ -34,7 +35,7 @@ class Application:
         msb.showinfo("Info", "Plik został utworzony, za chwile nastąpi jego edycja w notatniku")
         execute = "notepad.exe " + self.path
         os.system(execute)
-
+        self.mainFilePath = self.path
         newTextInfo= " Zostały utworzone pliki:%s"%self.createNewFileAfterTestContentTxt(self.path)
         self.displayInfo(newTextInfo)
 
@@ -65,27 +66,29 @@ class Application:
 
     def createNewFileAfterTestContentTxt(self,path):
         numberOfLines = len(open(path).readlines())
+
         if numberOfLines == 0:
             self.nameNewFile = "puste"
-            with open(self.createFilePath(self.nameNewFile), "w", -1, "utf-8") as file:
-                file.write(self.nameNewFile)
-
+            self.updateFileTxt(self.nameNewFile)
             return  self.nameNewFile
         elif numberOfLines == 1:
             self.nameNewFile = "krótkie"
-            with open(self.createFilePath(self.nameNewFile), "w", -1, "utf-8") as file:
-                file.write(self.nameNewFile)
+            self.updateFileTxt(self.nameNewFile)
             return  self.nameNewFile
         elif numberOfLines <=10:
             self.nameNewFile = "średnie"
-            with open(self.createFilePath(self.nameNewFile), "w", -1, "utf-8") as file:
-                file.write(self.nameNewFile)
+            self.updateFileTxt(self.nameNewFile)
             return  self.nameNewFile
         elif numberOfLines >10:
             self.nameNewFile = "długie"
-            with open(self.createFilePath(self.nameNewFile), "w", -1, "utf-8") as file:
-                file.write(self.nameNewFile)
+            self.updateFileTxt(self.nameNewFile)
             return  self.nameNewFile
+
+    def updateFileTxt(self,fileName):
+        newFiles = open(self.createFilePath(fileName), "a+")
+        newFiles.write(self.mainFilePath + '\n')
+        print("plik dopisany")
+        newFiles.close()
 
 
 
