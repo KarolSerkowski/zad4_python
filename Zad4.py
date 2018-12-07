@@ -10,11 +10,12 @@ class Application:
     fileName = datetime.datetime.today().strftime('%Y-%m-%d')
     directory = ""
     path = ""
+    nameNewFile = ""
 
     def __init__(self):
         self.window = tk.Tk()
-        self.window.bind("<Button-1>", self.click_ppm_lpm)
-        self.window.bind("<Button-3>", self.click_ppm_lpm)
+        self.window.bind("<Button-1>", self.click_ppm_lpm_controller)
+        self.window.bind("<Button-3>", self.click_ppm_lpm_controller)
         textInfo =  "Witaj, \n kliknij w to okno aby wybrać lokalizację zapisu plików: \n-plik data****-**-**.txt\n "
         self.displayInfo(textInfo)
 
@@ -26,14 +27,15 @@ class Application:
         label.pack()
         text.set(textInfo)
 
-    def click_ppm_lpm (self, event):
+    def click_ppm_lpm_controller (self, event):
 
         self.save_file()
 
         msb.showinfo("Info", "Plik został utworzony, za chwile nastąpi jego edycja w notatniku")
         execute = "notepad.exe " + self.path
         os.system(execute)
-        newTextInfo= " Zostały utworzone pliki:"
+
+        newTextInfo= " Zostały utworzone pliki:%s"%self.createNewFileAfterTestContentTxt(self.path)
         self.displayInfo(newTextInfo)
 
 
@@ -46,7 +48,7 @@ class Application:
 
         if filename:
             print (filename)
-            with open(self.createFilePath(), "w", -1, "utf-8") as file:
+            with open(self.createFilePath(self.fileName), "w", -1, "utf-8") as file:
                 file.write(filename) #.get(1.0, tk.END)
                 print ("zapisano plik")
 
@@ -55,11 +57,36 @@ class Application:
         self.fileName = datetime.datetime.today().strftime('%Y-%m-%d %H-%M-%S')
         return self.fileName
 
-    def createFilePath(self):
-        path = os.path.join(self.directory, self.fileName + ".txt")
+    def createFilePath(self,toFilename):
+        path = os.path.join(self.directory, toFilename + ".txt")
         self.path = path
         print (path)
         return path
+
+    def createNewFileAfterTestContentTxt(self,path):
+        numberOfLines = len(open(path).readlines())
+        if numberOfLines == 0:
+            self.nameNewFile = "puste"
+            with open(self.createFilePath(self.nameNewFile), "w", -1, "utf-8") as file:
+                file.write(self.nameNewFile)
+
+            return  self.nameNewFile
+        elif numberOfLines == 1:
+            self.nameNewFile = "krótkie"
+            with open(self.createFilePath(self.nameNewFile), "w", -1, "utf-8") as file:
+                file.write(self.nameNewFile)
+            return  self.nameNewFile
+        elif numberOfLines <=10:
+            self.nameNewFile = "średnie"
+            with open(self.createFilePath(self.nameNewFile), "w", -1, "utf-8") as file:
+                file.write(self.nameNewFile)
+            return  self.nameNewFile
+        elif numberOfLines >10:
+            self.nameNewFile = "długie"
+            with open(self.createFilePath(self.nameNewFile), "w", -1, "utf-8") as file:
+                file.write(self.nameNewFile)
+            return  self.nameNewFile
+
 
 
 
