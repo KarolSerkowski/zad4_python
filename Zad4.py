@@ -6,11 +6,12 @@ from tkinter import messagebox as msb
 
 
 class Application:
-    filename = datetime.datetime.today().strftime('%Y-%m-%d')
+    fileName = datetime.datetime.today().strftime('%Y-%m-%d')
+
     def __init__(self):
         self.window = tk.Tk()
-        self.window.bind("<Button-1>", self.wnd_lbc)
-        self.window.bind("<Button-3>", self.wnd_rbc)
+        self.window.bind("<Button-1>", self.click_ppm_lpm)
+        self.window.bind("<Button-3>", self.click_ppm_lpm)
 
         text = tk.StringVar()
         label = tk.Label(self.window, textvariable=text, padx=100, pady=20)
@@ -23,18 +24,12 @@ class Application:
         # "-długie.txt, jeśli utworzony plik ma więcej niż 10 linii
         self.window.mainloop()
 
-    def wnd_lbc(self, event):
+    def click_ppm_lpm (self, event):
 
         self.save_file()
 
-        msb.showinfo("Info", "Plik został utworzony, za chwile nastąi jego edycja w notatniku")
+        msb.showinfo("Info", "Plik został utworzony, za chwile nastąpi jego edycja w notatniku")
 
-    def wnd_rbc(self, event):
-        if msb.askokcancel("Pytanie",
-                           "Czy ja śnię,\nczy kliknąłeś w okno me!"):  # okno dialogowe z przyciskami ok i cancel - zwraca prawdę, gdy ok jest wciśnięte
-            msb.showinfo("Info", "A jednak to prawdą było!\nA jednak mi się nie przyśniło")
-        else:
-            msb.showinfo("Info", "Przykro mi się zrobiło,\nChyba mi się coś przyśniło")
 
     def save_file(self):
         filename = fd.asksaveasfilename(filetypes=[("Plik tekstowy", "*.txt")],
@@ -42,10 +37,12 @@ class Application:
 
         if filename:
             with open(filename, "w", -1, "utf-8") as file:
-                file.write(self.text.get(1.0, tk.END))
+                file.write(self.fileName.get(1.0, tk.END))
+
+
     def getDateToFileName(self):
-        self.filename = datetime.datetime.today().strftime('%Y-%m-%d')
-        return self.filename
+        self.fileName = datetime.datetime.today().strftime('%Y-%m-%d %H-%M-%S')
+        return self.fileName
 
 
 apl = Application()
