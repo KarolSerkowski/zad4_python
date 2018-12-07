@@ -42,16 +42,16 @@ class Application:
 
     def save_file(self):
 
-        self.directory = fd.askdirectory()  # wywołanie okna dialogowego do wskazania ścieżki do folderu docelowego
+        self.directory = fd.askdirectory()  # wskazanie ścieżki do folderu docelowego
         if self.directory:
             msb.showinfo("Info", "Wybrano taki folder {folder} do zapisu plików.".format(folder=self.directory))
             filename = str(self.getDateToFileName())
 
         if filename:
             print (filename)
-            with open(self.createFilePath(self.fileName), "w", -1, "utf-8") as file:
-                file.write(filename) #.get(1.0, tk.END)
-                print ("zapisano plik")
+            newFiles = open(self.createFilePath(filename), "a+")
+            print("plik z data zapisany")
+            newFiles.close()
 
 
     def getDateToFileName(self):
