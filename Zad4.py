@@ -1,12 +1,14 @@
 import tkinter as tk
 from tkinter import filedialog as fd
 import datetime
+import os
 
 from tkinter import messagebox as msb
 
 
 class Application:
     fileName = datetime.datetime.today().strftime('%Y-%m-%d')
+    directory = ""
 
     def __init__(self):
         self.window = tk.Tk()
@@ -32,17 +34,29 @@ class Application:
 
 
     def save_file(self):
-        filename = fd.asksaveasfilename(filetypes=[("Plik tekstowy", "*.txt")],
-                                        defaultextension="*.txt", initialfile =str(self.getDateToFileName()))  # wywołanie okna dialogowego save file
+
+        self.directory = fd.askdirectory()  # wywołanie okna dialogowego do wskazania ścieżki do folderu docelowego
+        if self.directory:
+            msb.showinfo("Info", "Wybrano taki folder {folder} do zapisu plików:".format(folder=self.directory))
+            filename = str(self.getDateToFileName())
 
         if filename:
-            with open(filename, "w", -1, "utf-8") as file:
-                file.write(self.fileName.get(1.0, tk.END))
+            print (filename)
+            with open(self.createFilePath(), "w", -1, "utf-8") as file:
+                file.write(filename) #.get(1.0, tk.END)
+                print ("zapisano plik")
 
 
     def getDateToFileName(self):
         self.fileName = datetime.datetime.today().strftime('%Y-%m-%d %H-%M-%S')
         return self.fileName
+
+    def createFilePath(self):
+        path = os.path.join(self.directory, self.fileName + ".txt")
+        print (path)
+        return path
+
+        # execute = "notepad.exe " + path
 
 
 apl = Application()
